@@ -7,7 +7,6 @@ import (
 	"log"
 	"go-docker-ci/calc"
 	"encoding/json"
-	"fmt"
 )
 
 // Create HTTP router
@@ -33,8 +32,6 @@ func HomeHandler(writer http.ResponseWriter, request *http.Request) {
 func AddHandler(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 
-	fmt.Println(vars)
-
 	x, err := strconv.ParseInt(vars["x"], 10, 32)
 	if err != nil {
 		log.Println(err)
@@ -54,8 +51,8 @@ func AddHandler(writer http.ResponseWriter, request *http.Request) {
 		"result": result,
 	}
 
+	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
-	writer.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(response)
 }
 
@@ -82,8 +79,8 @@ func SubtractHandler(writer http.ResponseWriter, request *http.Request) {
 		"result": result,
 	}
 
-	writer.WriteHeader(http.StatusOK)
 	writer.Header().Add("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
 	json.NewEncoder(writer).Encode(response)
 }
 
@@ -110,8 +107,8 @@ func MultiplyHandler(writer http.ResponseWriter, request *http.Request) {
 		"result": result,
 	}
 
-	writer.WriteHeader(http.StatusOK)
 	writer.Header().Add("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
 	json.NewEncoder(writer).Encode(response)
 }
 
@@ -144,7 +141,7 @@ func DivideHandler(writer http.ResponseWriter, request *http.Request) {
 		"result": result,
 	}
 
-	writer.WriteHeader(http.StatusOK)
 	writer.Header().Add("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
 	json.NewEncoder(writer).Encode(response)
 }

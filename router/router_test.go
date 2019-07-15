@@ -5,7 +5,8 @@ import (
 	"net/http/httptest"
 	"net/http"
 	"io/ioutil"
-	"fmt"
+	"github.com/gorilla/mux"
+	"strings"
 )
 
 // Home route handler
@@ -27,69 +28,136 @@ func TestHomeHandler(t *testing.T) {
 
 // Add route handler
 func TestAddHandler(t *testing.T) {
-	request, err := http.Get("/add/1/2")
+	request, err := http.NewRequest("GET", "/add/1/2", nil)
 	if err != nil {
-		fmt.Println(err)
-
 		t.Fatal(err)
 	}
 
 	recorder := httptest.NewRecorder()
-	http.HandlerFunc(AddHandler).ServeHTTP(recorder, request)
+	router := mux.NewRouter()
+	router.HandleFunc("/add/{x:[0-9]+}/{y:[0-9]+}", AddHandler).Methods("GET")
+	router.ServeHTTP(recorder, request)
 
 	response := recorder.Result()
-	body, _ := ioutil.ReadAll(response.Body)
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		t.Errorf("Invalid HTTP response")
+	}
 
-	fmt.Println(string(body))
 	if response.StatusCode != http.StatusOK {
 		t.Errorf("Unexpected status code %d", response.StatusCode)
 	}
+
+	if response.Header.Get("Content-Type") != "application/json" {
+		t.Errorf("Unexpected content type: %s", response.Header.Get("Content-Type"))
+	}
+
+	result := strings.TrimSpace(string(body))
+	expected := string(`{"result":3}`)
+
+	if result != expected {
+		t.Errorf("Invalid result: %s; expected: %s", result, expected)
+	}
 }
-//
-//// Subtract route handler
-//func TestSubtractHandler(t *testing.T) {
-//	request, err := http.NewRequest("GET", "/sub/2/2", nil)
-//	if err != nil {
-//		t.Fatal(err)
-//	}
-//
-//	recorder := httptest.NewRecorder()
-//	http.HandlerFunc(SubtractHandler).ServeHTTP(recorder, request)
-//
-//	response := recorder.Result()
-//	if response.StatusCode != http.StatusOK {
-//		t.Errorf("Unexpected status code %d", response.StatusCode)
-//	}
-//}
-//
-//// Multiply route handler
-//func TestMultiplyHandler(t *testing.T) {
-//	request, err := http.NewRequest("GET", "/mul/2/2", nil)
-//	if err != nil {
-//		t.Fatal(err)
-//	}
-//
-//	recorder := httptest.NewRecorder()
-//	http.HandlerFunc(MultiplyHandler).ServeHTTP(recorder, request)
-//
-//	response := recorder.Result()
-//	if response.StatusCode != http.StatusOK {
-//		t.Errorf("Unexpected status code %d", response.StatusCode)
-//	}
-//}
-//
-//// Divide route handler
-//func TestDivideHandler(t *testing.T) {
-//	request, err := http.NewRequest("GET", "/div/4/2", nil)
-//	if err != nil {
-//		t.Fatal(err)
-//	}
-//
-//	recorder := httptest.NewRecorder()
-//	http.HandlerFunc(DivideHandler).ServeHTTP(recorder, request)
-//
-//	response := recorder.Result()
-//	if response.StatusCode != http.StatusOK {
-//		t.Errorf("Unexpected status code %d", response.StatusCode)
-//	}
-//}
+
+// Subtract route handler
+func TestSubtractHandler(t *testing.T) {
+	request, err := http.NewRequest("GET", "/sub/5/2", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	recorder := httptest.NewRecorder()
+	router := mux.NewRouter()
+	router.HandleFunc("/sub/{x:[0-9]+}/{y:[0-9]+}", SubtractHandler).Methods("GET")
+	router.ServeHTTP(recorder, request)
+
+	response := recorder.Result()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		t.Errorf("Invalid HTTP response")
+	}
+
+	if response.StatusCode != http.StatusOK {
+		t.Errorf("Unexpected status code %d", response.StatusCode)
+	}
+
+	if response.Header.Get("Content-Type") != "application/json" {
+		t.Errorf("Unexpected content type: %s", response.Header.Get("Content-Type"))
+	}
+
+	result := strings.TrimSpace(string(body))
+	expected := string(`{"result":3}`)
+
+	if result != expected {
+		t.Errorf("Invalid result: %s; expected: %s", result, expected)
+	}
+}
+
+// Multiply route handler
+func TestMultiplyHandler(t *testing.T) {
+	request, err := http.NewRequest("GET", "/mul/5/2", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	recorder := httptest.NewRecorder()
+	router := mux.NewRouter()
+	router.HandleFunc("/mul/{x:[0-9]+}/{y:[0-9]+}", MultiplyHandler).Methods("GET")
+	router.ServeHTTP(recorder, request)
+
+	response := recorder.Result()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		t.Errorf("Invalid HTTP response")
+	}
+
+	if response.StatusCode != http.StatusOK {
+		t.Errorf("Unexpected status code %d", response.StatusCode)
+	}
+
+	if response.Header.Get("Content-Type") != "application/json" {
+		t.Errorf("Unexpected content type: %s", response.Header.Get("Content-Type"))
+	}
+
+	result := strings.TrimSpace(string(body))
+	expected := string(`{"result":10}`)
+
+	if result != expected {
+		t.Errorf("Invalid result: %s; expected: %s", result, expected)
+	}
+}
+
+// Divide route handler
+func TestDivideHandler(t *testing.T) {
+	request, err := http.NewRequest("GET", "/div/8/2", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	recorder := httptest.NewRecorder()
+	router := mux.NewRouter()
+	router.HandleFunc("/div/{x:[0-9]+}/{y:[0-9]+}", DivideHandler).Methods("GET")
+	router.ServeHTTP(recorder, request)
+
+	response := recorder.Result()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		t.Errorf("Invalid HTTP response")
+	}
+
+	if response.StatusCode != http.StatusOK {
+		t.Errorf("Unexpected status code %d", response.StatusCode)
+	}
+
+	if response.Header.Get("Content-Type") != "application/json" {
+		t.Errorf("Unexpected content type: %s", response.Header.Get("Content-Type"))
+	}
+
+	result := strings.TrimSpace(string(body))
+	expected := string(`{"result":4}`)
+
+	if result != expected {
+		t.Errorf("Invalid result: %s; expected: %s", result, expected)
+	}
+}
