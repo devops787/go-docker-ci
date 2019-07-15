@@ -1,24 +1,19 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
 	"log"
 	"fmt"
+	"go-docker-ci/router"
 )
 
 func main() {
-	router := mux.NewRouter()
-	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Write([]byte("Hello world!"))
-	})
-
 	server := http.Server{
-		Handler: router,
+		Handler: router.NewRouter(),
 		Addr: ":3000",
 	}
 
-	fmt.Println("Listening on port 3000")
+	fmt.Println("Starting server at port 3000")
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
