@@ -8,6 +8,11 @@ sudo: false
 
 env:
 
+branches:
+  only:
+    - master
+    - stable
+
 before_install:
   - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
   - dep ensure
@@ -26,8 +31,6 @@ script:
   - go vet ./...
   - go test -v
   - go test -v -race ./...
-
-after_success:
 
 #notifications:
 #  webhooks:
