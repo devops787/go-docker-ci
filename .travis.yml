@@ -1,0 +1,37 @@
+language: go
+
+go:
+  - 1.12.x
+  - master
+
+sudo: false
+
+env:
+
+before_install:
+  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  - dep ensure
+
+before_script:
+  - echo $TRAVIS
+  - echo $TRAVIS_PULL_REQUEST
+  - echo $TRAVIS_PULL_REQUEST_BRANCH
+  - echo $TRAVIS_COMMIT
+  - echo $TRAVIS_PULL_REQUEST_SHA
+  - echo $TRAVIS_REPO_SLUG
+  - echo $TRAVIS_SECURE_ENV_VARS
+  - curl httpbin.org/ip
+
+script:
+  - go vet ./...
+  - go test -v
+  - go test -v -race ./...
+
+after_success:
+
+#notifications:
+#  webhooks:
+#    urls:
+#    on_success: change
+#    on_failure: always
+#    on_start: never
