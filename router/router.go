@@ -7,17 +7,14 @@ import (
 	"log"
 	"go-docker-ci/calc"
 	"encoding/json"
+	"fmt"
 )
 
 // Create HTTP router
 func NewRouter() *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		writer.WriteHeader(http.StatusOK)
-		writer.Write([]byte("Hello world!"))
-	})
-
+	router.HandleFunc("/", HomeHandler).Methods("GET")
 	router.HandleFunc("/add/{x:[0-9]+}/{y:[0-9]+}", AddHandler).Methods("GET")
 	router.HandleFunc("/sub/{x:[0-9]+}/{y:[0-9]+}", SubtractHandler).Methods("GET")
 	router.HandleFunc("/mul/{x:[0-9]+}/{y:[0-9]+}", MultiplyHandler).Methods("GET")
@@ -26,9 +23,17 @@ func NewRouter() *mux.Router {
 	return router
 }
 
+// Home route handler
+func HomeHandler(writer http.ResponseWriter, request *http.Request) {
+	writer.WriteHeader(http.StatusOK)
+	writer.Write([]byte("Hello world!"))
+}
+
 // Add route handler
 func AddHandler(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
+
+	fmt.Println(vars)
 
 	x, err := strconv.ParseInt(vars["x"], 10, 32)
 	if err != nil {

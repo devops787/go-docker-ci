@@ -7,7 +7,7 @@ import (
 // Add two integer numbers
 func TestAdd(t *testing.T) {
 	result := Add(1, 1)
-	expected := 2
+	var expected int32 = 2
 
 	if result != expected {
 		t.Errorf("Add(1, 1) = %d; expecred %d", result, expected)
@@ -17,7 +17,7 @@ func TestAdd(t *testing.T) {
 // Subtract two integer numbers
 func TestSubtract(t *testing.T) {
 	result := Subtract(5, 2)
-	expected := 3
+	var expected int32 = 3
 
 	if result != expected {
 		t.Errorf("Subtract(5, 2) = %d; expecred %d", result, expected)
@@ -27,7 +27,7 @@ func TestSubtract(t *testing.T) {
 // Multiply two integer numbers
 func TestMultiply(t *testing.T) {
 	result := Multiply(3, 6)
-	expected := 18
+	var expected int32 = 18
 
 	if result != expected {
 		t.Errorf("Multiply(3, 6) = %d; expecred %d", result, expected)
@@ -37,7 +37,7 @@ func TestMultiply(t *testing.T) {
 // Divide two integer numbers
 func TestDivide(t *testing.T) {
 	result, err := Divide(20, 5)
-	expected := 4
+	var expected int32 = 4
 
 	if err != nil {
 		t.Errorf("Divide(20, 5) returned error: %v", err)
