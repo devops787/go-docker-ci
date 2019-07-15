@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-docker-ci/router"
+	"github.com/devops787/go-docker-ci/router"
 	"log"
 	"net/http"
 )

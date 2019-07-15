@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"log"
-	"go-docker-ci/calc"
+	"github.com/devops787/go-docker-ci/calc"
 	"encoding/json"
 )
 

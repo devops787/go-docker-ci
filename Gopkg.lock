@@ -2,6 +2,17 @@
 
 
 [[projects]]
+  branch = "develop"
+  digest = "1:4a856b5d0d1033189017764623773d477e57a6b6df0d5edf304e28d85a0de014"
+  name = "github.com/devops787/go-docker-ci"
+  packages = [
+    "calc",
+    "router",
+  ]
+  pruneopts = "UT"
+  revision = "62d3580102feffa2d262785f5132896a8d076337"
+
+[[projects]]
   digest = "1:cbec35fe4d5a4fba369a656a8cd65e244ea2c743007d8f6c1ccb132acf9d1296"
   name = "github.com/gorilla/mux"
   packages = ["."]
@@ -12,6 +23,10 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/gorilla/mux"]
+  input-imports = [
+    "github.com/devops787/go-docker-ci/calc",
+    "github.com/devops787/go-docker-ci/router",
+    "github.com/gorilla/mux",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
