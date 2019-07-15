@@ -2,7 +2,8 @@ language: go
 
 go:
   - 1.12.x
-  - master
+
+go_import_path: github.com/devops787/go-docker-ci
 
 sudo: false
 
@@ -14,10 +15,6 @@ branches:
     - stable
 
 before_install:
-  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-  - dep ensure
-
-before_script:
   - echo $TRAVIS
   - echo $TRAVIS_PULL_REQUEST
   - echo $TRAVIS_PULL_REQUEST_BRANCH
@@ -26,6 +23,10 @@ before_script:
   - echo $TRAVIS_REPO_SLUG
   - echo $TRAVIS_SECURE_ENV_VARS
   - curl httpbin.org/ip
+
+before_script:
+  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  - dep ensure
 
 script:
   - go vet ./...
