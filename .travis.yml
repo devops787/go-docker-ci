@@ -14,16 +14,6 @@ branches:
     - master
     - stable
 
-before_install:
-  - echo $TRAVIS
-  - echo $TRAVIS_PULL_REQUEST
-  - echo $TRAVIS_PULL_REQUEST_BRANCH
-  - echo $TRAVIS_COMMIT
-  - echo $TRAVIS_PULL_REQUEST_SHA
-  - echo $TRAVIS_REPO_SLUG
-  - echo $TRAVIS_SECURE_ENV_VARS
-  - curl httpbin.org/ip
-
 before_script:
   - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
   - dep ensure
@@ -32,10 +22,12 @@ script:
   - go vet ./...
   - go test -v
   - go test -v -race ./...
+  - go build -v ./...
 
-#notifications:
-#  webhooks:
-#    urls:
-#    on_success: change
-#    on_failure: always
-#    on_start: never
+notifications:
+  webhooks:
+    urls:
+      - https://cloud.docker.com/api/build/v1/source/c0116dd5-88ce-431d-9dc2-5ec14276b632/trigger/3dd09442-705f-44c5-b9ef-266c6336940c/call/
+    on_success: change
+    on_failure: never
+    on_start: never
